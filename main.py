@@ -5,14 +5,8 @@ import torch
 import torch.nn as nn
 import torch.functional as F
 
+import datasets
+from torch.utils.data import DataLoader
+
 from models.architectures import UNet, AttnUNet
 import utilities
-
-############################### Parsing ################
-import argparse
-
-
-############################### Testing ################
-path = './data/COULE/train/'
-utilities.create_path_if_not_exists(path)
-
