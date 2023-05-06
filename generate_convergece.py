@@ -1,7 +1,9 @@
 import numpy as np
 import torch
+import math
 
 import datasets, utilities
+from variational import operators
 
 path = './data/COULE/train/gt/'
 
@@ -10,6 +12,7 @@ x = data[0][0]
 
 m, n = x.shape
 
-y_delta = x + utilities.get_gaussian_noise(x, noise_level=0.05)
-print(np.linalg.norm(y_delta.flatten() - x.flatten()))
-utilities.viz_and_compare((x, y_delta))
+angles = np.linspace(0, np.pi, 120)
+A = operators.CTProjector((m, n), angles, geometry='fanflat')
+
+y = A(x.flatten())
