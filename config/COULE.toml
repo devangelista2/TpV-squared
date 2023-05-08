@@ -1,0 +1,71 @@
+# Config file for COULE experiments.
+m = 256
+n = 256
+
+############# Test Mild
+[test_mild_sparsity]
+# Noise informations
+noise_level = 0.02
+
+# Projector informations
+det_size = 512
+geometry = "fanflat"
+
+# Angular range informations
+start_angle = 0
+end_angle = 180
+n_angles = 180
+
+# RIS informations
+k = 5
+
+# TpV solver parameters
+[test_mild_sparsity.p_1_0]
+epsilon_scale = 5e-3 # The default was 1e-5
+lmbda = 0.035
+
+[test_mild_sparsity.p_0_5]
+epsilon_scale = 5e-3
+lmbda = 0.1389
+
+[test_mild_sparsity.p_0_1]
+epsilon_scale = 5e-3
+lmbda = 0.4742
+
+[test_mild_sparsity.p_0_01]
+epsilon_scale = 5e-3
+lmbda = 0.8
+
+################ Test Severe
+[test_severe_sparsity]
+# Noise informations
+noise_level = 0.02
+
+# Projector informations
+det_size = 512
+geometry = "fanflat"
+
+# Angular range informations
+start_angle = 0
+end_angle = 180
+n_angles = 60
+
+# RIS informations
+k = 5
+
+# TpV solver parameters
+[test_severe_sparsity.p_1_0]
+epsilon_scale = 0
+lmbda = 0
+
+[test_severe_sparsity.p_0_5]
+epsilon_scale = 0
+lmbda = 0
+
+[test_severe_sparsity.p_0_1]
+epsilon_scale = 0
+lmbda = 0
+
+[test_severe_sparsity.p_0_01]
+epsilon_scale = 0
+lmbda = 0
