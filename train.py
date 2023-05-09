@@ -97,14 +97,14 @@ A = operators.CTProjector((m, n), angles, det_size=test_cfg['det_size'], geometr
 solver = solvers.ChambollePockTpV(A)
 
 ######################## Define train parameters
-model = AttnUNet(img_ch=1, output_ch=1).to(device)
+model = UNet(img_ch=1, output_ch=1).to(device)
 
 # Loss function
 loss_fn = nn.MSELoss()
-optimizer = torch.optim.Adam(model.parameters(), lr=1e-2)
+optimizer = torch.optim.Adam(model.parameters(), lr=1e-3)
 
 # Cycle over the epochs
-print(f"Training AttnUNet model for {args.n_epochs} epochs and batch size of {args.batch_size}.")
+print(f"Training UNet model for {args.n_epochs} epochs and batch size of {args.batch_size}.")
 loss_total = np.zeros((args.n_epochs,))
 ssim_total = np.zeros((args.n_epochs,))
 for epoch in range(args.n_epochs):
@@ -160,9 +160,6 @@ for epoch in range(args.n_epochs):
     # Update the history
     loss_total[epoch] = epoch_loss / (t+1)
     ssim_total[epoch] = ssim_loss / (t+1)
-# Save the history
-np.save('mse_history.npy', loss_total)
-np.save('ssim_history.npy', loss_total)
 
 # Save the weights
 weights_path = f'./model_weights/{args.data}/RISING_{args.experiment}_p_{args.p}/'
@@ -171,4 +168,4 @@ weights_path = f'./model_weights/{args.data}/RISING_{args.experiment}_p_{args.p}
 utilities.create_path_if_not_exists(weights_path)
 
 # Save the weights of the model
-torch.save(model.state_dict(), weights_path+'AttnUNet.pt')
+torch.save(model.state_dict(), weights_path+'UNet.pt')

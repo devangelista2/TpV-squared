@@ -43,7 +43,7 @@ class ImageDataset(Dataset):
 
         if self.label_path is not None:
             label = Image.open(self.label_name_list[index])
-            label = np.expand_dims(np.array(label)[:, :, 0], 0)
+            label = utilities.normalize(np.expand_dims(np.array(label)[:, :, 0], 0))
 
             if not self.numpy:
                 label = torch.Tensor(label)
