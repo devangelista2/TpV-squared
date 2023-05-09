@@ -66,7 +66,7 @@ elif args.experiment == "severe":
 else:
     raise ValueError
 
-# Define dataset 
+# Define dataset
 data = datasets.ImageDataset(path, numpy=True)
 
 # Get data shape.

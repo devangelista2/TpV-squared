@@ -3,6 +3,10 @@ import numpy as np
 
 from skimage.metrics import structural_similarity as ssim
 
+def d(x1, x2):
+    """Compute the Euclidean distance between x1 and x2"""
+    return np.linalg.norm(x1.flatten() - x2.flatten(), 2)
+
 def np_RE(x_pred, x_true):
     """Compute relative error between numpy arrays."""
     return np.linalg.norm(x_pred.flatten() - x_true.flatten(), 2) / np.linalg.norm(x_true.flatten(), 2)
