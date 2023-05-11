@@ -87,10 +87,10 @@ y = A(x_true.flatten())
 y_delta = y + utilities.get_gaussian_noise(y, noise_level=test_cfg['noise_level'])
 
 # Setup the search space
-lmbda_space = np.linspace(0.01, 0.5, 20) # np.linspace(0.1, 2, 20)
-epsilon_scale_space = [1e-3, 5e-3, 1e-4, 5e-4, 1e-5]
+lmbda_space = np.linspace(8e-4, 2e-3, 20)
+epsilon_scale_space = [5e-3] # [1e-3, 5e-3, 1e-4, 5e-4, 1e-5]
 
-ssim_vec = np.zeros((len(lmbda_space), len(epsilon_scale_space)))
+RMSE_vec = np.zeros((len(lmbda_space), len(epsilon_scale_space)))
 for i, lmbda in enumerate(lmbda_space):
     for j, epsilon_scale in enumerate(epsilon_scale_space):
         # Define epsilon
@@ -100,16 +100,16 @@ for i, lmbda in enumerate(lmbda_space):
         solver = solvers.ChambollePockTpV(A)
 
         # Compute solution
-        x_tpv = solver(y_delta, epsilon=epsilon, lmbda=lmbda, x_true=x_true.flatten(), p=args.p, maxiter=200).reshape((m, n))
+        x_tpv = solver(y_delta, epsilon=epsilon, lmbda=lmbda, x_true=x_true.flatten(), p=args.p, maxiter=400).reshape((m, n))
         
-        # Compute (and save) SSIM
-        ssim_vec[i, j] = metrics.SSIM(x_tpv, x_true[0])
+        # Compute (and save) RMSE
+        RMSE_vec[i, j] = metrics.RMSE(x_tpv, x_true[0])
 
         # Verbose
-        print(f"({lmbda}, {epsilon_scale}) SSIM: {ssim_vec[i, j]}.")
+        print(f"({lmbda}, {epsilon_scale}) RMSE: {RMSE_vec[i, j]}.")
 
 # Save the result
 out_path = f'./results/optimality/{args.data}/{args.mode}'
 utilities.create_path_if_not_exists(out_path)
 
-np.save(out_path + f"/SSIM_optimal_{args.experiment}_p_{args.p}.npy", ssim_vec)
+np.save(out_path + f"/RMSE_optimal_{args.experiment}_p_{args.p}.npy", RMSE_vec)

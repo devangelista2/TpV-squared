@@ -139,7 +139,7 @@ for i in range(len(gt_data)):
     y = A(x_tmp)
 
     # Add noise
-    y_delta = y + utilities.get_gaussian_noise(y, noise_level=test_cfg['noise_level'])
+    y_delta = y + test_cfg['noise_level'] * 190 * np.random.normal(0, 1, y.shape)
 
     # Get the parameters for the optimization algorithm
     epsilon = test_cfg[f'p_{str(args.p).replace(".", "_")}']['epsilon_scale'] * np.max(y_delta) * np.sqrt(len(y_delta))
@@ -161,9 +161,9 @@ for i in range(len(gt_data)):
     x_rising = x_rising.detach().cpu().numpy()
 
     # From x_rising, compute x_rising_is
-    x_rising_is = solver(y_delta, epsilon=epsilon, lmbda=lmbda, 
+    x_rising_is = solver(y_delta, epsilon=epsilon, lmbda=0.012, 
                          x_true=x_tmp, p=args.p, starting_point=np.expand_dims(x_rising.flatten(), -1),
-                         maxiter=10).reshape((1, m, n))
+                         maxiter=50).reshape((1, m, n))
     
     # Save into an array
     rising_data[i] = torch.tensor(x_rising.reshape((1, m, n)))
@@ -174,13 +174,32 @@ for i in range(len(gt_data)):
     plt.imsave(rising_is_save_path + name_list[i], x_rising_is.reshape((m, n)), cmap='gray')
 
     # Compute metrics
-    ssim_INGGT = metrics.SSIM(x_rising.reshape((m, n)), x_tmp.reshape((m, n)))
-    ssim_INGISGT = metrics.SSIM(x_rising_is.reshape((m, n)), x_tmp.reshape((m, n)))
-    ssim_INGINGIS = metrics.SSIM(x_rising.reshape((m, n)), x_rising_is.reshape((m, n)))
+    ssim_ING_IS = metrics.SSIM(x_rising.reshape((m, n)), x_is.reshape((m, n)))
+    ssim_INGIS_IS = metrics.SSIM(x_rising_is.reshape((m, n)), x_is.reshape((m, n)))
+    ssim_ING_INGIS = metrics.SSIM(x_rising.reshape((m, n)), x_rising_is.reshape((m, n)))
 
-    re_INGGT = metrics.np_RE(x_rising.reshape((m, n)), x_tmp.reshape((m, n)))
-    re_INGISGT = metrics.np_RE(x_rising_is.reshape((m, n)), x_tmp.reshape((m, n)))
-    re_INGINGIS = metrics.np_RE(x_rising.reshape((m, n)), x_rising_is.reshape((m, n)))    
+    ssim_IS_GT = metrics.SSIM(x_is.reshape((m, n)), x_tmp.reshape((m, n)))
+    ssim_ING_GT = metrics.SSIM(x_rising.reshape((m, n)), x_tmp.reshape((m, n)))
+    ssim_INGIS_GT = metrics.SSIM(x_rising_is.reshape((m, n)), x_tmp.reshape((m, n)))
+
+    RE_ING_IS = metrics.np_RE(x_rising.reshape((m, n)), x_is.reshape((m, n)))
+    RE_INGIS_IS = metrics.np_RE(x_rising_is.reshape((m, n)), x_is.reshape((m, n)))
+    RE_ING_INGIS = metrics.np_RE(x_rising.reshape((m, n)), x_rising_is.reshape((m, n)))
+
+    RE_IS_GT = metrics.np_RE(x_is.reshape((m, n)), x_tmp.reshape((m, n)))
+    RE_ING_GT = metrics.np_RE(x_rising.reshape((m, n)), x_tmp.reshape((m, n)))
+    RE_INGIS_GT = metrics.np_RE(x_rising_is.reshape((m, n)), x_tmp.reshape((m, n)))
+
+    RMSE_ING_IS = metrics.RMSE(x_rising.reshape((m, n)), x_is.reshape((m, n)))
+    RMSE_INGIS_IS = metrics.RMSE(x_rising_is.reshape((m, n)), x_is.reshape((m, n)))
+    RMSE_ING_INGIS = metrics.RMSE(x_rising.reshape((m, n)), x_rising_is.reshape((m, n)))
+
+    RMSE_IS_GT = metrics.RMSE(x_is.reshape((m, n)), x_tmp.reshape((m, n)))
+    RMSE_ING_GT = metrics.RMSE(x_rising.reshape((m, n)), x_tmp.reshape((m, n)))
+    RMSE_INGIS_GT = metrics.RMSE(x_rising_is.reshape((m, n)), x_tmp.reshape((m, n)))
 
     # Verbose
-    print(f"Image {i+1}/{len(gt_data)} done. SSIM: {ssim_INGGT:0.3f}, {ssim_INGISGT:0.3f}, {ssim_INGINGIS:0.3f}.")
+    # print(f"Image {i+1}/{len(gt_data)} done. SSIM: {ssim_ING_IS:0.3f}, {ssim_INGIS_IS:0.3f}, {ssim_ING_INGIS:0.3f};")
+    # print(f"\t SSIM: {ssim_ING_GT:0.3f}, {ssim_INGIS_GT:0.3f}, {ssim_IS_GT:0.3f}.")
+
+    print(f"Image {i+1}/{len(gt_data)} done. RMSE: {RMSE_IS_GT:0.3f}, {RMSE_ING_GT:0.3f}, {RMSE_INGIS_GT:0.3f}.")

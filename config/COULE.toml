@@ -5,7 +5,7 @@ n = 256
 ############# Test Mild
 [test_mild_sparsity]
 # Noise informations
-noise_level = 0.02
+noise_level = 0.003
 
 # Projector informations
 det_size = 512
@@ -22,19 +22,15 @@ k = 10
 # TpV solver parameters
 [test_mild_sparsity.p_1_0]
 epsilon_scale = 5e-3 # The default was 1e-5
-lmbda = 0.035
+lmbda = 0.001 # 0.00035
 
 [test_mild_sparsity.p_0_5]
 epsilon_scale = 5e-3
-lmbda = 0.1389
+lmbda = 0.006 # 0.0012
 
 [test_mild_sparsity.p_0_1]
 epsilon_scale = 5e-3
-lmbda = 0.4742
-
-[test_mild_sparsity.p_0_01]
-epsilon_scale = 5e-3
-lmbda = 0.8
+lmbda = 0.015 # 0.01 # 0.005
 
 ################ Test Severe
 [test_severe_sparsity]

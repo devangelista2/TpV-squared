@@ -100,7 +100,12 @@ class ChambollePockTpV:
 
             # Stopping criteria
             c = np.sqrt(res) / (np.max(b) * np.sqrt(self.m))
+            d_abs = np.linalg.norm(x.flatten() - xtmp.flatten(), 2)
+
             if (c>= 9e-6) and (c<=1.1e-5):
+                con = False
+
+            if d_abs < 1e-3*(1 + np.linalg.norm(xtmp.flatten(), 2)):
                 con = False
 
             # Update k

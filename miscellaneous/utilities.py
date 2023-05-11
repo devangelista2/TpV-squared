@@ -51,7 +51,7 @@ def viz_and_compare(img, title=None, save_path=None):
 def get_gaussian_noise(y, noise_level=0.01):
     noise = np.random.normal(size=y.shape) # random gaussian distribution
     noise /= np.linalg.norm(noise.flatten(), 2) # frobenius norm
-    return noise * noise_level * np.linalg.norm(y.flatten(), 2)
+    return noise * noise_level * np.sqrt(len(y.flatten()))
 
 def load_toml(data_name):
     """Load TOML data from file, given dataset name."""

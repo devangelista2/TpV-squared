@@ -36,3 +36,12 @@ def batch_SSIM(x_pred, x_true):
         ssim_total = ssim_total + SSIM(x_pred[i, 0], x_true[i, 0])
     return ssim_total / len(x_pred)
 
+def RMSE(x_pred, x_true):
+    """Compute the Root Mean Squared Error (RMSE) between the two input imaged x_pred and x_true."""
+    return np.sqrt(np.mean(np.square(x_pred.flatten() - x_true.flatten())))
+
+def RMSE_loss(x_pred, x_true):
+    """Compute the Root Mean Squared Error (RMSE) between the two input imaged x_pred and x_true. We assume both of them to be
+    pytorch tensors."""
+    return torch.sqrt(torch.mean(torch.square(x_pred - x_true)))
+

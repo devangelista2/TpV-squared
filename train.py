@@ -124,7 +124,7 @@ for epoch in range(args.n_epochs):
             y = A(x_tmp)
 
             # Add noise
-            y_delta = y + utilities.get_gaussian_noise(y, noise_level=test_cfg['noise_level'])
+            y_delta = y + test_cfg['noise_level'] * 190 * np.random.normal(0, 1, y.shape)
 
             # Get the parameters for the optimization algorithm
             epsilon = test_cfg[f'p_{str(args.p).replace(".", "_")}']['epsilon_scale'] * np.max(y_delta) * np.sqrt(len(y_delta))
@@ -145,7 +145,7 @@ for epoch in range(args.n_epochs):
 
         # forward + backward + optimize
         x_rising = model(x_ris)
-        loss = loss_fn(x_rising, x_is)
+        loss = loss_fn(x_rising, x_true) # x_is)
         loss.backward()
         optimizer.step()
 
@@ -154,7 +154,7 @@ for epoch in range(args.n_epochs):
         ssim_loss += metrics.batch_SSIM(x_rising, x_is)
 
         # print the value of loss
-        print(f"({t+1}, {epoch+1}) - MAE: {epoch_loss / (t+1)} - SSIM: {ssim_loss / (t+1)}", end="\r")
+        print(f"({t+1}, {epoch+1}) - RMSE: {epoch_loss / (t+1)} - SSIM: {ssim_loss / (t+1)}", end="\r")
     print("")
 
     # Update the history
