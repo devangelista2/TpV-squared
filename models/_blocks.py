@@ -20,6 +20,26 @@ class conv_block(nn.Module):
     def forward(self,x):
         x = self.conv(x)
         return x
+    
+class res_conv_block(nn.Module):
+    def __init__(self,ch_in,ch_out):
+        super(res_conv_block,self).__init__()
+        self.conv = nn.Sequential(
+            nn.Conv2d(ch_in, ch_out, kernel_size=3,stride=1,padding=1,bias=True),
+            nn.BatchNorm2d(ch_out),
+            nn.ReLU(inplace=True),
+            nn.Conv2d(ch_out, ch_out, kernel_size=3,stride=1,padding=1,bias=True),
+            nn.BatchNorm2d(ch_out),
+            nn.ReLU(inplace=True)
+        )
+
+        self.conv2 = nn.Conv2d(ch_out+ch_in, ch_out, kernel_size=3,stride=1,padding=1,bias=True)
+
+
+    def forward(self,x):
+        h = self.conv(x)
+        x = self.conv2(torch.cat((x, h), dim=1))
+        return x
 
 class up_conv(nn.Module):
     def __init__(self,ch_in,ch_out):

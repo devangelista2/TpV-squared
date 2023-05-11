@@ -11,7 +11,7 @@ import torch.functional as F
 import miscellaneous.datasets as datasets
 from torch.utils.data import DataLoader
 
-from models.architectures import UNet, AttnUNet
+from models.architectures import UNet, AttnUNet, ResUNet
 import miscellaneous.utilities as utilities
 from variational import operators, solvers
 
@@ -49,7 +49,7 @@ parser.add_argument('--model',
                     type=str,
                     required=False,
                     default="unet",
-                    choices=["unet", "attnunet"]
+                    choices=["unet", "attnunet", "resunet"]
                     )
 parser.add_argument('--device',
                     required=False,
@@ -105,6 +105,9 @@ if args.model == "unet":
 elif args.model == "attnunet":
     model_suffix = "AttnUNet"
     model = AttnUNet(img_ch=1, output_ch=1).to(device)
+elif args.model == "resunet":
+    model_suffix = "ResUNet"
+    model = ResUNet(img_ch=1, output_ch=1).to(device)
 else:
     raise ValueError
 
@@ -130,6 +133,7 @@ rising_data = torch.zeros((len(gt_data), 1, m, n))
 rising_is_data = torch.zeros((len(gt_data), 1, m, n))
 for i in range(len(gt_data)):
     x_tmp = gt_data[i].numpy().flatten()
+    x_is = is_data[i].numpy().flatten()
     
     # Compute the sinogram
     y = A(x_tmp)
@@ -155,16 +159,15 @@ for i in range(len(gt_data)):
 
     # Copy results in CPU
     x_rising = x_rising.detach().cpu().numpy()
-    x_rising = utilities.normalize(x_rising)
 
     # From x_rising, compute x_rising_is
     x_rising_is = solver(y_delta, epsilon=epsilon, lmbda=lmbda, 
                          x_true=x_tmp, p=args.p, starting_point=np.expand_dims(x_rising.flatten(), -1),
-                         maxiter=50).reshape((1, m, n))
+                         maxiter=10).reshape((1, m, n))
     
     # Save into an array
-    # rising_data[i] = x_rising
-    # rising_is_data[i] = x_rising_is
+    rising_data[i] = torch.tensor(x_rising.reshape((1, m, n)))
+    rising_is_data[i] = torch.tensor(x_rising_is.reshape((1, m, n)))
 
     # Save in png
     plt.imsave(rising_save_path + name_list[i], x_rising.reshape((m, n)), cmap='gray')
@@ -180,4 +183,4 @@ for i in range(len(gt_data)):
     re_INGINGIS = metrics.np_RE(x_rising.reshape((m, n)), x_rising_is.reshape((m, n)))    
 
     # Verbose
-    print(f"Image {i+1}/{len(gt_data)} done. RE: {re_INGGT:0.3f}, {re_INGISGT:0.3f}, {re_INGINGIS:0.3f}.")
+    print(f"Image {i+1}/{len(gt_data)} done. SSIM: {ssim_INGGT:0.3f}, {ssim_INGISGT:0.3f}, {ssim_INGINGIS:0.3f}.")

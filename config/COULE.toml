@@ -17,7 +17,7 @@ end_angle = 180
 n_angles = 180
 
 # RIS informations
-k = 5
+k = 10
 
 # TpV solver parameters
 [test_mild_sparsity.p_1_0]

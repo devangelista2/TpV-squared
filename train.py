@@ -11,7 +11,7 @@ import torch.functional as F
 import miscellaneous.datasets as datasets
 from torch.utils.data import DataLoader
 
-from models.architectures import UNet, AttnUNet
+from models.architectures import UNet, AttnUNet, ResUNet
 import miscellaneous.utilities as utilities
 from variational import operators, solvers
 
@@ -97,14 +97,14 @@ A = operators.CTProjector((m, n), angles, det_size=test_cfg['det_size'], geometr
 solver = solvers.ChambollePockTpV(A)
 
 ######################## Define train parameters
-model = UNet(img_ch=1, output_ch=1).to(device)
+model = ResUNet(img_ch=1, output_ch=1).to(device)
 
 # Loss function
-loss_fn = nn.MSELoss()
+loss_fn = nn.L1Loss()
 optimizer = torch.optim.Adam(model.parameters(), lr=1e-3)
 
 # Cycle over the epochs
-print(f"Training UNet model for {args.n_epochs} epochs and batch size of {args.batch_size}.")
+print(f"Training ResUNet model for {args.n_epochs} epochs and batch size of {args.batch_size}.")
 loss_total = np.zeros((args.n_epochs,))
 ssim_total = np.zeros((args.n_epochs,))
 for epoch in range(args.n_epochs):
@@ -154,7 +154,7 @@ for epoch in range(args.n_epochs):
         ssim_loss += metrics.batch_SSIM(x_rising, x_is)
 
         # print the value of loss
-        print(f"({t+1}, {epoch+1}) - MSE: {epoch_loss / (t+1)} - SSIM: {ssim_loss / (t+1)}", end="\r")
+        print(f"({t+1}, {epoch+1}) - MAE: {epoch_loss / (t+1)} - SSIM: {ssim_loss / (t+1)}", end="\r")
     print("")
 
     # Update the history
@@ -168,4 +168,4 @@ weights_path = f'./model_weights/{args.data}/RISING_{args.experiment}_p_{args.p}
 utilities.create_path_if_not_exists(weights_path)
 
 # Save the weights of the model
-torch.save(model.state_dict(), weights_path+'UNet.pt')
+torch.save(model.state_dict(), weights_path+'ResUNet.pt')
