@@ -1,4 +1,4 @@
-# TpV_RISING
+# (T$_p$V)^2
 
 ## Installation
 To replicate the proposed experiments, just clone the Github repository by
