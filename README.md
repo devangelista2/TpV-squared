@@ -1,4 +1,4 @@
-# (T$_p$V)^2
+# TpV-squared
 
 ## Installation
 To replicate the proposed experiments, just clone the Github repository by
