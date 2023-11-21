@@ -24,7 +24,11 @@ Our experiments have been performed on the COULE dataset (available on Kaggle at
 </p>
 
 ## Methods
-We consider $x \in \mathbb{R}^n$ to be a grey-scale image representing the (unknown) interior scan we want to reconstruct. Also, given an angular range $\Gamma \subseteq [0, 2\pi]$ discretized into $N_\alpha$ uniformly distributed angles, we define the CT forward projector (with fan-beam geometry) $K \in \mathbb{R}^{m \times n}$ where $m = N_\alpha \cdot N_d$, $N_d$ being the number of pixel of the detector, which in the experiments is equal to $2\sqrt{n}$. The forward problem reads $` y^\delta = Kx + e \quad e \sim \mathcal{N}(0,\sigma^2I). `$
+We consider $x \in \mathbb{R}^n$ to be a grey-scale image representing the (unknown) interior scan we want to reconstruct. Also, given an angular range $\Gamma \subseteq [0, 2\pi]$ discretized into $N_\alpha$ uniformly distributed angles, we define the CT forward projector (with fan-beam geometry) $K \in \mathbb{R}^{m \times n}$ where $m = N_\alpha \cdot N_d$, $N_d$ being the number of pixel of the detector, which in the experiments is equal to $2\sqrt{n}$. The forward problem reads
+
+```math
+y^\delta = Kx + e \quad e \sim \mathcal{N}(0,\sigma^2I).
+```
 
 where $\sigma^2$ is selected such that $||e|| \leq \delta$ with high probability. 
 
