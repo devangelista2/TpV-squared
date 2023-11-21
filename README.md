@@ -90,7 +90,8 @@ will run the test with $p = 1$ on the test set, by computing the TpV-Net solutio
 python test.py --h
 ```
 
-
-
 ## Pre-trained models
 The weights for the pre-trained models is available for the download on Google Drive at the following URL: https://drive.google.com/drive/folders/1GoVA3jZKafdlzoOK4lX0SblntKUM8PNE?usp=sharing
+
+## Cite Us
+The paper associated with this repository has been submitted to the NUMTA2023 conference. The BibTex to cite the paper will be available as soon as the paper will be published. 
