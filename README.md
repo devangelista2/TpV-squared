@@ -26,23 +26,23 @@ Our experiments have been performed on the COULE dataset (available on Kaggle at
 ## Methods
 We consider $x \in \mathbb{R}^n$ to be a grey-scale image representing the (unknown) interior scan we want to reconstruct. Also, given an angular range $\Gamma \subseteq [0, 2\pi]$ discretized into $N_\alpha$ uniformly distributed angles, we define the CT forward projector (with fan-beam geometry) $K \in \mathbb{R}^{m \times n}$ where $m = N_\alpha \cdot N_d$, $N_d$ being the number of pixel of the detector, which in the experiments is equal to $2\sqrt{n}$. The forward problem reads
 
-\begin{align}
+\begin{equation}
     y^\delta = Kx + e \quad e \sim \mathcal{N}(0,\sigma^2I)
-\end{align}
+\end{equation}
 
 where $\sigma^2$ is selected such that $||e|| \leq \delta$ with high probability. 
 
 Given $p \in (0, 1]$, we consider the regularized variational functional
 
-\begin{align}
+\begin{equation}
     \min_{x \geq 0} \frac{1}{2} || Kx - y^\delta ||_2^2 + \frac{\lambda}{p} || \nabla x ||_{2, p}^p
-\end{align}
+\end{equation}
 
 where 
 
-\begin{align}
+\begin{equation}
     || \nabla x ||_{2, p}^p = \sum_{i=1}^n \Bigl( \sqrt{(\nabla_h x)_i^2 + (\nabla_v x)_i^2} \Bigr)^p
-\end{align}
+\end{equation}
 
 is the isotropic Total Variation operator of order $p>0$.
 
