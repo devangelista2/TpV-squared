@@ -57,7 +57,7 @@ With the notation above, we define:
 
 where *IS* stands for *Iterative Solution*, while *RIS* stands for *Rapid Iterative Solution*.
 
-Given a set of ground-truth images $\{ x^{GT}_{i} \}_{i=1}^N \subseteq \mathbb{R}^n$, we consider, for any $i = 1, \dots, N$, $x^{RIS}_{i} = \phi^{p}_{k}(y^{\delta}_{i})$ and $x^{IS}_{i} = \hat{\phi}^p(y^{\delta}_{i})$, where $y^{\delta}_{i} = Kx^{GT}_{i} + e_{i}$. A neural network $\psi_{\theta}$ trained to map $x^{RIS}$ to $x^{IS}$ is called **TpV-Net** in the following.
+Given a set of ground-truth images $` \{ x^{GT}_{i} \}_{i=1}^N \subseteq \mathbb{R}^n `$, we consider, for any $` i = 1, \dots, N$, $x^{RIS}_{i} = \phi^{p}_{k}(y^{\delta}_{i}) `$ and $` x^{IS}_{i} = \hat{\phi}^p(y^{\delta}_{i}) `$, where $` y^{\delta}_{i} = Kx^{GT}_{i} + e_{i} `$. A neural network $\psi_{\theta}$ trained to map $x^{RIS}$ to $x^{IS}$ is called **TpV-Net** in the following.
 
 Furthermore, to obtain a solution which is provably a stationary point for the TpT-regularized inverse problem, we consider an algorithm where the TpV-Net solution is employed as starting iteration of the Chambolle-Pock algorithm. The rationale for this choice is that if TpV-Net is able to generate high quality images, we can assume its output is close to the global minima of the objective function. Thus, executing an iterative algorithm with is as starting point, will be able to reach a good stationary point in fewer iterations than the usual method that starts from $x^{(0)} = 0$. We call this method **TpV-squared**.
 
