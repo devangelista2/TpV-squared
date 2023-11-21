@@ -57,7 +57,7 @@ With the notation above, we define:
 
 where *IS* stands for *Iterative Solution*, while *RIS* stands for *Rapid Iterative Solution*.
 
-Given a set of ground-truth images $\{ x_i^{GT} \}_{i=1}^N \subseteq \mathbb{R}^n$, we consider, for any $i = 1, \dots, N$, $x^{RIS}_i = \phi^p_k(y^{\delta}_{i})$ and $x^{IS}_i = \hat{\phi}^p(y^{\delta}_{i})$, where $y^{\delta}_i = Kx^{GT}_{i} + e_{i}$. A neural network $\psi_{\theta}$ trained to map $x^{RIS}$ to $x^{IS}$ is called **TpV-Net** in the following.
+Given a set of ground-truth images $\{ x^{GT}_{i} \}_{i=1}^N \subseteq \mathbb{R}^n$, we consider, for any $i = 1, \dots, N$, $x^{RIS}_{i} = \phi^{p}_{k}(y^{\delta}_{i})$ and $x^{IS}_{i} = \hat{\phi}^p(y^{\delta}_{i})$, where $y^{\delta}_{i} = Kx^{GT}_{i} + e_{i}$. A neural network $\psi_{\theta}$ trained to map $x^{RIS}$ to $x^{IS}$ is called **TpV-Net** in the following.
 
 Furthermore, to obtain a solution which is provably a stationary point for the TpT-regularized inverse problem, we consider an algorithm where the TpV-Net solution is employed as starting iteration of the Chambolle-Pock algorithm. The rationale for this choice is that if TpV-Net is able to generate high quality images, we can assume its output is close to the global minima of the objective function. Thus, executing an iterative algorithm with is as starting point, will be able to reach a good stationary point in fewer iterations than the usual method that starts from $x^{(0)} = 0$. We call this method **TpV-squared**.
 
@@ -69,6 +69,28 @@ The main objective of this work is to explore how the TpV-Net and TpV-squared ap
 - If TpV-squared requires fewer iterations than TpV-CP to converge.
 
 In particular, we tested the above problem on a SparseCT inverse problem, where the operator $K$ describes the fanbeam Radon transforms, with angular range $\Gamma = [0, 180]$ and number of discretization angles $N_\alpha = 180$. We refer to this setup as **Mild Sparse**. We plan to extend those methods to a **Severely Sparse** problem, where the number of projection angles is reduced to $N_\alpha = 60$. We test each method with $p \in \{ 0.1, 0.5, 1 \}$ in the following. We remark that when $p=1$, the resulting optimization problem is convex.
+
+## Usage
+
+> **NOTE:** To replicate the experiments, it is required to either train the models again by running the command: 
+> ```
+> python train.py --batch_size BATCHSIZE --n_epochs N_EPOCHS --p P --device DEVICE
+> ```
+> with your choice of BATCHSIZE, N_EPOCHS, P and DEVICE, or by downloading the pretrained models from the link below in the corresponding section. Note that the weights are supposed to be placed in a folder named `model_weights` that has to created, whose structure follows the folder structure of the downloadable model weights from Google Drive. 
+
+The results present in the paper, can be simply obtained by running the `test.py` file with the desired parameters. For example, the command
+
+```
+python test.py --p 1 --mode test --model unet --device cuda
+```
+
+will run the test with $p = 1$ on the test set, by computing the TpV-Net solution with a UNet model on GPU. To get the list of available settings with the documentation, just type:
+
+```
+python test.py --h
+```
+
+
 
 ## Pre-trained models
 The weights for the pre-trained models is available for the download on Google Drive at the following URL: https://drive.google.com/drive/folders/1GoVA3jZKafdlzoOK4lX0SblntKUM8PNE?usp=sharing
