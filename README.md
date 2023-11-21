@@ -53,9 +53,11 @@ Given $k \in \mathbb{N}$, we define the operator $\phi_k^p: \mathbb{R}^m \times 
 With the notation above, we define:
 
 - $x^{IS} = \hat{\phi}^p(y^\delta)$;
-- $x^{RIS} = \phi_k^p(y^\delta)$.
+- $x^{RIS} = \phi_k^p(y^\delta)$,
 
-Given a set of ground-truth images $\{ x_i^{GT} \}_{i=1}^N \subseteq \mathbb{R}^n$, we consider, for any $i = 1, \dots, N$, $x^{RIS}_i = \phi_k^p(y^\delta_i)$ and $x^{IS}_i = \hat{\phi}^p(y^\delta_i)$, where $y^\delta_i = Kx^{GT}_i + e_i$. A neural network $\psi_\theta$ trained to map $x^{RIS}$ to $x^{IS}$ is called TpV-RISING in the following. \\
+where *IS* stands for *Iterative Solution*, while *RIS* stands for *Rapid Iterative Solution*.
+
+Given a set of ground-truth images $\{ x_i^{GT} \}_{i=1}^N \subseteq \mathbb{R}^n$, we consider, for any $i = 1, \dots, N$, $x^{RIS}_i = \phi^p_k(y^\delta_i)$ and $x^{IS}_i = \hat{\phi}^p(y^{\delta}_i)$, where $y^{\delta}_i = Kx^{GT}_i + e_i$. A neural network $\psi_{\theta}$ trained to map $x^{RIS}$ to $x^{IS}$ is called **TpV-Net** in the following.
 
 The main objective of this work is to explore how TpV-RISING behaves on non-convex optimization problems. In particular, we remark that if $p<1$, then the problem above is non-convex, thus $` \hat{\phi}^p(y^\delta) `$ is, in general, just a local minima. In particular, named $x^{RISING} = \psi_\theta(y^\delta)$, we want to understand:
 
