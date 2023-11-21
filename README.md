@@ -57,20 +57,18 @@ With the notation above, we define:
 
 where *IS* stands for *Iterative Solution*, while *RIS* stands for *Rapid Iterative Solution*.
 
-Given a set of ground-truth images $\{ x_i^{GT} \}_{i=1}^N \subseteq \mathbb{R}^n$, we consider, for any $i = 1, \dots, N$, $x^{RIS}_i = \phi^p_k(y^\delta_i)$ and $x^{IS}_i = \hat{\phi}^p(y^{\delta}_i)$, where $y^{\delta}_i = Kx^{GT}_i + e_i$. A neural network $\psi_{\theta}$ trained to map $x^{RIS}$ to $x^{IS}$ is called **TpV-Net** in the following.
+Given a set of ground-truth images $\{ x_i^{GT} \}_{i=1}^N \subseteq \mathbb{R}^n$, we consider, for any $i = 1, \dots, N$, $x^{RIS}_i = \phi^p_k(y^{\delta}_{i})$ and $x^{IS}_i = \hat{\phi}^p(y^{\delta}_{i})$, where $y^{\delta}_i = Kx^{GT}_{i} + e_{i}$. A neural network $\psi_{\theta}$ trained to map $x^{RIS}$ to $x^{IS}$ is called **TpV-Net** in the following.
 
-The main objective of this work is to explore how TpV-RISING behaves on non-convex optimization problems. In particular, we remark that if $p<1$, then the problem above is non-convex, thus $` \hat{\phi}^p(y^\delta) `$ is, in general, just a local minima. In particular, named $x^{RISING} = \psi_\theta(y^\delta)$, we want to understand:
+Furthermore, to obtain a solution which is provably a stationary point for the TpT-regularized inverse problem, we consider an algorithm where the TpV-Net solution is employed as starting iteration of the Chambolle-Pock algorithm. The rationale for this choice is that if TpV-Net is able to generate high quality images, we can assume its output is close to the global minima of the objective function. Thus, executing an iterative algorithm with is as starting point, will be able to reach a good stationary point in fewer iterations than the usual method that starts from $x^{(0)} = 0$. We call this method **TpV-squared**.
 
-- If $x^{RISING}$ is close to the local minima $x^{IS}$;
-- If the local minima closest to $x^{RISING}$, namely $\hat{x}^{IS} = \hat{\phi}^p(y^\delta, x^{RISING})$, is far from $x^{RISING}$;
-- If $x^{IS}$ and $\hat{x}^{IS}$ represents the same local minima.
+The main objective of this work is to explore how the TpV-Net and TpV-squared approached behave on non-convex TpV optimization problem, compared to the classical TpV-CP iterative algorithm. In particular, we want to understand:
 
-This will be done by computing the distance between each couple of points, measured as euclidean distance and SSIM. In particular, we considered the following scenarios:
+- If the output of TpV-Net is close to the local minima $x^{IS}$;
+- If the local minima computed by TpV-squared is close to the prediction of TpV-Net;
+- If $x^{IS}$ and the output of TpV-squared represents the same local minima;
+- If TpV-squared requires fewer iterations than TpV-CP to converge.
 
-- **Mild Sparse**: $\Gamma = [0, 180]$ with $N_\alpha = 180$;
-- **Severe Sparse**:  $\Gamma = [0, 180]$ with $N_\alpha = 60$;
-
-each of them with $p \in \{ 0.01, 0.1, 0.5, 1 \}$. Remember that when $p=1$, the resulting optimization problem is convex.
+In particular, we tested the above problem on a SparseCT inverse problem, where the operator $K$ describes the fanbeam Radon transforms, with angular range $\Gamma = [0, 180]$ and number of discretization angles $N_\alpha = 180$. We refer to this setup as **Mild Sparse**. We plan to extend those methods to a **Severely Sparse** problem, where the number of projection angles is reduced to $N_\alpha = 60$. We test each method with $p \in \{ 0.1, 0.5, 1 \}$ in the following. We remark that when $p=1$, the resulting optimization problem is convex.
 
 ## Pre-trained models
 The weights for the pre-trained models is available for the download on Google Drive at the following URL: https://drive.google.com/drive/folders/1GoVA3jZKafdlzoOK4lX0SblntKUM8PNE?usp=sharing
