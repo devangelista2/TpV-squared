@@ -46,18 +46,18 @@ where
 
 is the isotropic Total Variation operator of order $p>0$.
 
-Thid problem can be solved by using the Chambolle-Pock (CP) algorithm with reweighting. The resulting algorithm is called CP-T $_p $ V.
+Thid problem can be solved by using the Chambolle-Pock (CP) algorithm with reweighting. The resulting algorithm is called CP-T $`_p`$ V.
 
-Given $k \in \mathbb{N}$, we define the operator $\phi_k^p: \mathbb{R}^m \times \mathbb{R}^n \to \mathbb{R}^n$ such that $\phi_k^p(y^\delta, x^{(0)})$ models the application of $k$ iteration of the CP-T $_p $ V algorithm over the sinogram $y^\delta$, starting from the initial guess $x^{(0)}$. When the algorithm is executed until convergence (to a local minima), then the associated operator will be named $\hat{\phi}^p$. Finally, in the case where $x^{(0)} = 0$ and there is no confusion, we will redefine it from the input of $\phi_k^p(y^\delta) = \phi_k^p(y^\delta, x^{(0)})$ and $\hat{\phi}^p(y^\delta) = \hat{\phi}^p(y^\delta, x^{(0)})$. 
+Given $k \in \mathbb{N}$, we define the operator $\phi_k^p: \mathbb{R}^m \times \mathbb{R}^n \to \mathbb{R}^n$ such that $\phi_k^p(y^\delta, x^{(0)})$ models the application of $k$ iteration of the CP-T $` _p `$ V algorithm over the sinogram $y^\delta$, starting from the initial guess $x^{(0)}$. When the algorithm is executed until convergence (to a local minima), then the associated operator will be named $\hat{\phi}^p$. Finally, in the case where $x^{(0)} = 0$ and there is no confusion, we will redefine it from the input of $\phi_k^p(y^\delta) = \phi_k^p(y^\delta, x^{(0)})$ and $\hat{\phi}^p(y^\delta) = \hat{\phi}^p(y^\delta, x^{(0)})$. 
 
 With the notation above, we define:
 
 - $x^{IS} = \hat{\phi}^p(y^\delta)$;
 - $x^{RIS} = \phi_k^p(y^\delta)$.
 
-Given a set of ground-truth images $\{ x_i^{GT} \}_{i=1}^N \subseteq \mathbb{R}^n$, we consider, for any $i = 1, \dots, N$, $x^{RIS}_i = \phi_k^p(y^\delta_i)$ and $x^{IS}_i = \hat{\phi}^p(y^\delta_i)$, where $y^\delta_i = Kx^{GT}_i + e_i$. A neural network $\psi_\theta$ trained to map $x^{RIS}$ to $x^{IS}$ is called T $_p $ $V-RISING in the following. \\
+Given a set of ground-truth images $\{ x_i^{GT} \}_{i=1}^N \subseteq \mathbb{R}^n$, we consider, for any $i = 1, \dots, N$, $x^{RIS}_i = \phi_k^p(y^\delta_i)$ and $x^{IS}_i = \hat{\phi}^p(y^\delta_i)$, where $y^\delta_i = Kx^{GT}_i + e_i$. A neural network $\psi_\theta$ trained to map $x^{RIS}$ to $x^{IS}$ is called T $`_p`$ $V-RISING in the following. \\
 
-The main objective of this work is to explore how T $_p $ V-RISING behaves on non-convex optimization problems. In particular, we remark that if $p<1$, then the problem above is non-convex, thus $` \hat{\phi}^p(y^\delta) `$ is, in general, just a local minima. In particular, named $x^{RISING} = \psi_\theta(y^\delta)$, we want to understand:
+The main objective of this work is to explore how T $`_p `$ V-RISING behaves on non-convex optimization problems. In particular, we remark that if $p<1$, then the problem above is non-convex, thus $` \hat{\phi}^p(y^\delta) `$ is, in general, just a local minima. In particular, named $x^{RISING} = \psi_\theta(y^\delta)$, we want to understand:
 
 - If $x^{RISING}$ is close to the local minima $x^{IS}$;
 - If the local minima closest to $x^{RISING}$, namely $\hat{x}^{IS} = \hat{\phi}^p(y^\delta, x^{RISING})$, is far from $x^{RISING}$;
