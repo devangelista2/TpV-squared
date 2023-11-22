@@ -4,8 +4,8 @@
 To replicate the proposed experiments, just clone the Github repository by
 
 ```
-git clone https://github.com/devangelista2/TpV_RISING.git
-cd TpV_RISING
+git clone https://github.com/devangelista2/TpV-squared.git
+cd TpV-squared
 ```
 
 Please note that to run the experiments, the following packages are required:
